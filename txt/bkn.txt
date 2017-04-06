@@ -1,0 +1,74 @@
+var jQuery = {};
+var document = {};
+!function(e) {
+    e.cookie = function(e, t, r) {
+        if ("undefined" == typeof t) {
+            var n = null;
+            if (document.cookie && "" != document.cookie)
+                for (var o = document.cookie.split(";"), a = 0; a < o.length; a++) {
+                    var i = jQuery.trim(o[a]);
+                    if (i.substring(0, e.length + 1) == e + "=") {
+                        n = decodeURIComponent(i.substring(e.length + 1));
+                        break
+                    }
+                }
+            return n
+        }
+        r = r || {}, null === t && (t = "", r.expires = -1);
+        var c = "";
+        if (r.expires && ("number" == typeof r.expires || r.expires.toUTCString)) {
+            var s;
+            "number" == typeof r.expires ? (s = new Date, s.setTime(s.getTime() + 24 * r.expires * 60 * 60 * 1e3)) : s = r.expires, c = "; expires=" + s.toUTCString()
+        }
+        var u = r.path ? "; path=" + r.path : "", l = r.domain ? "; domain=" + r.domain : "", p = r.secure ? "; secure" : "";
+        document.cookie = [e, "=", encodeURIComponent(t), c, u, l, p].join("")
+    }, e.getHash = function(e) {
+        var t = new RegExp("(|#|&)" + e + "=([^&#]*)(&|#|$)"), r = location.href.match(t);
+        return decodeURIComponent(r ? r[2] : "")
+    }, e.getParam = function() {
+    }, e.getParameter = function(e) {
+        var t = new RegExp("(\\?|#|&)" + e + "=([^&#]*)(&|#|$)"), r = location.href.match(t);
+        return decodeURIComponent(r ? r[2] : "")
+    }, e.getLen = function(e) {
+        var t = e.split(""), r = 0;
+        for (var n in t)
+            t[n].charCodeAt(0) < 299 ? r++ : r += 3;
+        return r
+    }, e.substr = function(e, t) {
+        var r = 0, n = 0;
+        str_cut = new String, n = e.length;
+        for (var o = 0; n > o; o++)
+            if (a = e.charAt(o), r++, escape(a).length > 4 && (r += 2), str_cut = str_cut.concat(a), r >= t)
+                return str_cut;
+        return t > r ? e : void 0
+    }, e.getCSRFToken = function(skey) {
+        var t = skey;
+        if (t) {
+            for (var r = 5381, n = 0, o = t.length; o > n; ++n)
+                r += (r << 5) + t.charAt(n).charCodeAt();
+            return this.CSRFToken = 2147483647 & r
+        }
+    }, e.getQQ = function() {
+        var t = e.cookie("uin");
+        return t ? (t += "", t.replace(/^[\D0]+/g, "")) : 0
+    }, e.encodeHtml = function(e) {
+        return e += "", e = e.replace(/&/g, "&amp;"), e = e.replace(/>/g, "&gt;"), e = e.replace(/</g, "&lt;"), e = e.replace(/\"/g, "&quot;"), e = e.replace(/\'/g, "&#39;")
+    }, e.decodeHtml = function(e) {
+        return e += "", e = e.replace(/&amp;/g, "&"), e = e.replace(/&nbsp;/g, " "), e = e.replace(/&gt;/g, ">"), e = e.replace(/&lt;/g, "<"), e = e.replace(/&quot;/g, '"'), e = e.replace(/&#39;/g, "'")
+    }, e.encodeAttr = function(e) {
+        return e += "", e = e.replace(/&/g, "&amp;"), e = e.replace(/>/g, "&gt;"), e = e.replace(/</g, "&lt;"), e = e.replace(/"/g, "&quot;"), e = e.replace(/'/g, "&#39;"), e = e.replace(/=/g, "&#61;"), e = e.replace(/`/g, "&#96;")
+    }, e.isLogin = function() {
+        return e.cookie("p_skey") && e.cookie("skey")
+    }, e.checkEnterprise = function() {
+        var t = parseInt(e.getQQ());
+        return t >= 2355e6 && 2355199999 >= t ? !0 : t >= 23552e5 && 2355999999 >= t ? !0 : t >= 2850121e3 && 2854120999 >= t ? !0 : t >= 288e7 && 2881999999 >= t ? !0 : t >= 2885e6 && 2885999999 >= t ? !0 : !1
+    }, e.query = function(e) {
+        var t = window.location.search.match(new RegExp("(\\?|&)" + e + "=([^&]*)(&|$)"));
+        return t ? decodeURIComponent(t[2]) : ""
+    }, e.getHash = function(e) {
+        var t = window.location.hash.match(new RegExp("(#|&)" + e + "=([^&]*)(&|$)"));
+        return t ? decodeURIComponent(t[2]) : ""
+    }
+}(jQuery)
+
+var bkn = jQuery.getCSRFToken(skey);
